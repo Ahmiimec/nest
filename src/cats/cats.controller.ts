@@ -1,24 +1,42 @@
-import { Get, Controller, Redirect, Query } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Query,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+} from "@nestjs/common";
+import { CreateCatDto } from "./dto/create-cat.dto";
+import { CatsService } from "./cats.service";
+
 @Controller("cats")
 export class CatsController {
+  constructor(private catsService: CatsService) {}
+
+  @Post()
+  async create(@Body() createCatDto: CreateCatDto) {
+    this.catsService.create(createCatDto)
+  }
+
   @Get()
-  getRoute(): number {
-    return 1234;
+  findAll(@Query() query) {
+    this.catsService.findAll()
   }
-  @Get("new")
-  getNewRoute(): number {
-    return 123;
+
+  @Get(":id")
+  findOne(@Param("id") id: string) {
+    return `This action returns a #${id} cat`;
   }
-  @Get("redirect")
-  @Redirect("https://docs.nestjs.com", 302)
-  getRedirect():any {
-    if(false){
-        return { url: "https://docs.nestjs.com/v5/" };
-    }
+
+  @Put(":id")
+  update(@Param("id") id: string, @Body() updateCatDto) {
+    return `This action updates a #${id} cat`;
   }
-  @Get("getData")
-  getReqBody(@Query() request): string {
-    console.log("ShowHere", request)
-    return `Request Here : ${request.Test}`;
+
+  @Delete(":id")
+  remove(@Param("id") id: string) {
+    return `This action removes a #${id} cat`;
   }
 }
