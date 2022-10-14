@@ -1,4 +1,4 @@
-import { Get, Controller, Redirect, Req } from "@nestjs/common";
+import { Get, Controller, Redirect, Query } from "@nestjs/common";
 @Controller("cats")
 export class CatsController {
   @Get()
@@ -17,7 +17,8 @@ export class CatsController {
     }
   }
   @Get("getData")
-  getReqBody(@Req() request): string {
-    return `Request Here : ${request.query.Test}`;
+  getReqBody(@Query() request): string {
+    console.log("ShowHere", request)
+    return `Request Here : ${request.Test}`;
   }
 }
